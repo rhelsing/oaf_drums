@@ -1,0 +1,5 @@
+numpy<1.24
+tensorflow==2.8.0
+pretty_midi
+pyfluidsynth
+librosa
