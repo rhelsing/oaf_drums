@@ -1,0 +1,40 @@
+# Configuration for Cog ⚙️
+# Reference: https://github.com/replicate/cog/blob/main/docs/yaml.md
+
+build:
+  # set to true if your model requires a GPU
+  gpu: false  # Magenta models typically benefit from GPU
+
+  # a list of ubuntu apt packages to install
+  system_packages:
+    - "build-essential"
+    - "libasound2-dev"
+    - "libjack-dev"
+    - "portaudio19-dev"
+    - "libsndfile1-dev"
+    - "libsndfile1"
+    - "ffmpeg"  # for audio processing
+    - "fluidsynth"  # for MIDI synthesis
+    - "git"  # to clone model if needed
+
+  # python version in the form '3.8' or '3.8.12'
+  python_version: "3.8"  # Magenta works best with 3.8
+
+  # a list of packages in the format <package-name>==<version>
+  python_packages:
+    - "magenta==2.1.3"
+    - "tensorflow==2.8.0"  # Compatible with Magenta 2.1.3
+    - "numpy<1.24"  # Compatibility constraint
+    - "pretty_midi"
+    - "pyfluidsynth"
+    - "librosa"
+  
+  # commands run after the environment is setup
+  run:
+    # Download the E-GMD checkpoint for drums
+    - "mkdir -p models"
+    - "cd models && wget -q https://storage.googleapis.com/magentadata/models/onsets_frames_transcription/e-gmd_checkpoint.zip"
+    - "cd models && unzip -q e-gmd_checkpoint.zip && rm e-gmd_checkpoint.zip"
+
+# predict.py defines how predictions are run on your model
+predict: "predict.py:Predictor"
